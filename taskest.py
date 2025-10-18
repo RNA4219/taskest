@@ -226,11 +226,25 @@ def fmt_md(res: Dict) -> str:
         buf_note += "（タスク行は素の値、総計のみ適用）"
     out.append(f"*{buf_note}*")
     out.append("")
-    out.append("| タスク | 難易度 | 領域/根拠 | 見積(時間) |")
-    out.append("|---|---|---|---:|")
-    for it in res["items"]:
+    out.append("| # | タスク | 難易度/根拠 | 領域/根拠 | コアh | QA h | 表示 |")
+    out.append("|---|---|---|---|---:|---:|---:|")
+    for idx, it in enumerate(res["items"], start=1):
+        diff = f"{it['difficulty']} ({it['difficulty_reason']})"
         dom = f"{it['domain']} ({it['domain_reason']})"
-        out.append(f"| {it['task']} | {it['difficulty']} | {dom} | **{it['shown_hours']:.1f}h** |")
+        core = f"{it['core_hours']:.1f}h"
+        qa = f"{it['qa_hours']:.1f}h" if res.get("with_qa") else "—"
+        shown = f"{it['shown_hours']:.1f}h"
+        out.append(f"| {idx} | {it['task']} | {diff} | {dom} | {core} | {qa} | {shown} |")
+    out.append("")
+    out.append("**タスク別メモ**")
+    out.append("")
+    for idx, it in enumerate(res["items"], start=1):
+        mods = it["modifiers"]
+        memo = (
+            f"base {it['base_hours']:.1f}h × domain {it['multiplier']:.2f}"
+            f" × first_time {mods['first_time']:.2f} × platforms {mods['platforms']:.2f}"
+        )
+        out.append(f"{idx}. {it['task']} … {memo}")
     out.append("")
     if res.get("with_qa"):
         out.append("**QA補助（検出時のみ）**")
