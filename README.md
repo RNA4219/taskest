@@ -1,3 +1,5 @@
+This repository is an R&D artifact and is not used in my current workflow. Keeping it as an archive.
+
 # taskest (minimal)
 自然文→タスク分解→一般エンジニア基準の概算工数を出す**ローカルCLI**。QA併記/加算、バッファ対応。単一ファイル版。
 
